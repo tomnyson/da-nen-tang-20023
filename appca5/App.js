@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import Profile from "./components/Profile";
 import UserProfile from "./components/UserProfile";
+import axios from 'axios';
+
 /**
  * tên
  * tuổi
@@ -49,6 +51,14 @@ const PreviewProfile = (props) => {
 export default function App() {
   const [diemManh, setDiemManh] = useState("");
   const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    console.log("render success");
+  }, []);
+
+  const fetchProducts = () => {
+    const response = await axios.get('')
+  }
   return (
     <View style={{ marginTop: 20 }}>
       {/* <TextInput

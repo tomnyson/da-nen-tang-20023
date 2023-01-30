@@ -11,6 +11,9 @@ export const styles = StyleSheet.create({
   txtRed: {
     color: "red",
   },
+  containerProduct: {
+    padding: 5,
+  },
 });
 
 export const textStyle = StyleSheet.create({
