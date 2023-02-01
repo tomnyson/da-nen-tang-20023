@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Profile from "./components/Profile";
 import UserProfile from "./components/UserProfile";
-import axios from 'axios';
+import PostList from "./components/ProductList";
 
 /**
  * tên
@@ -56,9 +56,6 @@ export default function App() {
     console.log("render success");
   }, []);
 
-  const fetchProducts = () => {
-    const response = await axios.get('')
-  }
   return (
     <View style={{ marginTop: 20 }}>
       {/* <TextInput
@@ -71,7 +68,8 @@ export default function App() {
 
       <PreviewProfile setEdit={setEdit} edit={edit} />
       {!edit && <Profile ten="ABC" nganh="CNTT" diemManh={diemManh} />} */}
-      <UserProfile />
+      {/* <UserProfile /> */}
+      <PostList/>
     </View>
   );
 }

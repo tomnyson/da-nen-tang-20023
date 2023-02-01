@@ -13,6 +13,9 @@ const PreviewProfile = (props) => {
     <View>
       <Text>Tên: {props.profile.ten}</Text>
       <Text>Ngành: {props.profile.nganh}</Text>
+      <Text>Tuổi: {props.profile.tuoi}</Text>
+      <Text>Điểm yếu: {props.profile.diemyeu}</Text>
+      <Text>Điểm mạnh: {props.profile.diemyeu}</Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => props.setIsEdit(true)}
@@ -33,11 +36,12 @@ const UserProfile = () => {
   });
   const [isEdit, setIsEdit] = useState(true);
   const [erros, setErros] = useState({});
-  
+
   const handleSubmit = () => {
     if (profile.ten === "") {
       setErros({ ...erros, ten: "tên kho được để trống!" });
     }
+    setIsEdit(false);
   };
   console.log("profile", profile);
   return (
@@ -58,6 +62,7 @@ const UserProfile = () => {
             onChangeText={(text) => {
               setProfile({ ...profile, nganh: text });
             }}
+            defaultValue={profile.nganh}
             style={styles.textInput}
             placeholder="nhập ngành"
           />
@@ -65,6 +70,7 @@ const UserProfile = () => {
             onChangeText={(text) => {
               setProfile({ ...profile, tuoi: text });
             }}
+            defaultValue={profile.tuoi}
             style={styles.textInput}
             placeholder="nhập tuổi"
           />
@@ -72,6 +78,7 @@ const UserProfile = () => {
             onChangeText={(text) => {
               setProfile({ ...profile, diemyeu: text });
             }}
+            defaultValue={profile.diemyeu}
             style={styles.textInput}
             placeholder="nhập điểm yếu"
           />
@@ -79,6 +86,7 @@ const UserProfile = () => {
             onChangeText={(text) => {
               setProfile({ ...profile, diemmanh: text });
             }}
+            defaultValue={profile.diemmanh}
             style={styles.textInput}
             placeholder="nhập điểm mạnh"
           />

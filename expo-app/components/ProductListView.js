@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-export const ProductItem = ({ item }) => {
+export const ProductItem = ({ item, onGoDetail }) => {
   return (
     <View style={{ flex: 1 }}>
       <Image
@@ -27,12 +27,17 @@ export const ProductItem = ({ item }) => {
         <Text style={styles.price}>{item.price}</Text>
       </View>
       <Text>quantity: {item.quantity}</Text>
-      <Button title="Buy"></Button>
+      <Button title="Buy" onPress={() => onGoDetail(item)}></Button>
     </View>
   );
 };
-const ProductListView = ({ products, onHandleSearch }) => {
+const ProductListView = ({ products, onHandleSearch, navigation }) => {
   const [keyword, setKeyword] = useState("");
+
+  const onGoDetail = (item) => {
+    navigation.navigate("Detail", { detail: item });
+  };
+
   return (
     <FlatList
       ItemSeparatorComponent={
@@ -62,7 +67,9 @@ const ProductListView = ({ products, onHandleSearch }) => {
         </View>
       }
       data={products}
-      renderItem={({ item }) => <ProductItem item={item} />}
+      renderItem={({ item }) => (
+        <ProductItem onGoDetail={onGoDetail} item={item} />
+      )}
       keyExtractor={(item) => item.id}
       numColumns={2}
     />
