@@ -13,7 +13,7 @@ const ProductItem = (props) => {
       <Button
         title="detail"
         onPress={() => {
-          navigation.navigate("Detail");
+          navigation.navigate("Detail", { item: props.item });
         }}
       ></Button>
     </View>
