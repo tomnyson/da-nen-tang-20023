@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Image } from "react-native";
 import HomeScreen from "./screens/HomeScreen";
 import DetailScreen from "./screens/DetailScreen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,11 +23,17 @@ function LogoTitle() {
     />
   );
 }
-
+const Tab = createBottomTabNavigator();
 const Navigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <Tab.Navigator 
+        
+      >
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Detail" component={DetailScreen} />
+      </Tab.Navigator>
+      {/* <Stack.Navigator
         screenOptions={{
           title: "My home",
           //   headerTitle: (props) => <LogoTitle {...props} />,
@@ -54,7 +61,7 @@ const Navigation = () => {
             },
           }}
         />
-      </Stack.Navigator>
+      </Stack.Navigator> */}
     </NavigationContainer>
   );
 };
