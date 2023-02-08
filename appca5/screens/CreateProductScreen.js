@@ -11,6 +11,20 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup
+  .object({
+    title: yup.string().required(),
+    image: yup.string().required(),
+    price: yup.number().positive().integer().required(),
+    quantity: yup.number().positive().integer().required(),
+    discount: yup.number().positive().integer().required(),
+    description: yup.string().required(),
+    category: yup.string().required(),
+  })
+  .required();
 
 const CreateProductScreen = () => {
   const categories = ["samsung", "apple", "oppo", "vinsmart"];
@@ -29,10 +43,12 @@ const CreateProductScreen = () => {
       description: "",
       category: "samsung",
     },
+    resolver: yupResolver(schema),
   });
   const API = "https://61a5e3c48395690017be8ed2.mockapi.io/blogs/products";
   const onSubmit = async (data) => {
     try {
+      console.log(data);
       const response = await axios.post(API, data);
       if (response.status === 201) {
         Alert.alert("Success", "tạo thành công");
@@ -41,14 +57,14 @@ const CreateProductScreen = () => {
       console.error(error);
     }
   };
-
+  console.log("errors", errors);
   return (
     <View style={styles.container}>
       <Controller
         control={control}
-        rules={{
-          required: true,
-        }}
+        // rules={{
+        //   required: true,
+        // }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             onBlur={onBlur}
@@ -60,13 +76,15 @@ const CreateProductScreen = () => {
         )}
         name="title"
       ></Controller>
-      {errors.title && <Text style={styles.txtError}>This is required.</Text>}
+      {errors.title && (
+        <Text style={styles.txtError}>{errors.title.message}</Text>
+      )}
 
       <Controller
         control={control}
-        rules={{
-          required: true,
-        }}
+        // rules={{
+        //   required: true,
+        // }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             onBlur={onBlur}
@@ -78,13 +96,15 @@ const CreateProductScreen = () => {
         )}
         name="image"
       ></Controller>
-      {errors.image && <Text style={styles.txtError}>This is required.</Text>}
+      {errors.image && (
+        <Text style={styles.txtError}>{errors.title.image}</Text>
+      )}
 
       <Controller
         control={control}
-        rules={{
-          required: true,
-        }}
+        // rules={{
+        //   required: true,
+        // }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             onBlur={onBlur}
@@ -97,23 +117,40 @@ const CreateProductScreen = () => {
         )}
         name="price"
       ></Controller>
-      {errors.price && <Text style={styles.txtError}>This is required.</Text>}
-      <Picker
-        selectedValue={selected}
-        style={{ height: 50, width: 150 }}
-        onValueChange={setSelected}
-      >
-        {categories.map((category) => {
-          return (
-            <Picker.Item key={category} label={category} value={category} />
-          );
-        })}
-      </Picker>
+      {errors.price && (
+        <Text style={styles.txtError}>{errors.price.message}</Text>
+      )}
+
       <Controller
         control={control}
-        rules={{
-          required: true,
-        }}
+        // rules={{
+        //   required: true,
+        // }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Picker
+            onBlur={onBlur}
+            selectedValue={value}
+            style={{ height: 50, width: 150 }}
+            onValueChange={onChange}
+          >
+            {categories.map((category) => {
+              return (
+                <Picker.Item key={category} label={category} value={category} />
+              );
+            })}
+          </Picker>
+        )}
+        name="category"
+      ></Controller>
+      {errors.category && (
+        <Text style={styles.txtError}>{errors.price.category}</Text>
+      )}
+
+      <Controller
+        control={control}
+        // rules={{
+        //   required: true,
+        // }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             onBlur={onBlur}
@@ -126,13 +163,13 @@ const CreateProductScreen = () => {
         name="quantity"
       ></Controller>
       {errors.quantity && (
-        <Text style={styles.txtError}>This is required.</Text>
+        <Text style={styles.txtError}>{errors.quantity.message}</Text>
       )}
       <Controller
         control={control}
-        rules={{
-          required: true,
-        }}
+        // rules={{
+        //   required: true,
+        // }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             onBlur={onBlur}
@@ -146,13 +183,13 @@ const CreateProductScreen = () => {
         name="discount"
       ></Controller>
       {errors.discount && (
-        <Text style={styles.txtError}>This is required.</Text>
+        <Text style={styles.txtError}>{errors.discount.message}</Text>
       )}
       <Controller
         control={control}
-        rules={{
-          required: true,
-        }}
+        // rules={{
+        //   required: true,
+        // }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             onBlur={onBlur}
@@ -165,7 +202,7 @@ const CreateProductScreen = () => {
         name="description"
       ></Controller>
       {errors.description && (
-        <Text style={styles.txtError}>This is required.</Text>
+        <Text style={styles.txtError}>{errors.description.message}</Text>
       )}
       <Button onPress={handleSubmit(onSubmit)} title="Create"></Button>
     </View>
