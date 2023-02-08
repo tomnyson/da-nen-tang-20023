@@ -6,15 +6,22 @@ import DetailScreen from "./screens/DetailScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
 import CreateProductScreen from "./screens/CreateProductScreen";
-const Stack = createNativeStackNavigator();
 
-const Test = () => {
-  return (
-    <View>
-      <Text>home page</Text>
-    </View>
-  );
-};
+const HomeStack = createNativeStackNavigator();
+const AdminStack = createNativeStackNavigator();
+
+const HomeStackScreen = () => (
+  <HomeStack.Navigator>
+    <HomeStack.Screen name="Home" component={HomeScreen} />
+    <HomeStack.Screen name="Detail" component={DetailScreen} />
+  </HomeStack.Navigator>
+);
+
+const AdminStackScreen = () => (
+  <AdminStack.Navigator>
+    <AdminStack.Screen name="Create" component={CreateProductScreen} />
+  </AdminStack.Navigator>
+);
 
 function LogoTitle() {
   return (
@@ -39,46 +46,15 @@ const Navigation = () => {
             if (route.name === "Detail") {
               return <AntDesign name="profile" size={24} color={color} />;
             }
-            //<AntDesign name="pluscircleo" size={24} color="black" />
             return <AntDesign name="pluscircleo" size={24} color={color} />;
           },
           tabBarActiveTintColor: "green",
           tabBarInactiveTintColor: "gray",
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Detail" component={DetailScreen} />
-        <Tab.Screen name="Create" component={CreateProductScreen} />
+        <Tab.Screen name="Homes" component={HomeStackScreen} />
+        <Tab.Screen name="Admin" component={AdminStackScreen} />
       </Tab.Navigator>
-      {/* <Stack.Navigator
-        screenOptions={{
-          title: "My home",
-          //   headerTitle: (props) => <LogoTitle {...props} />,
-          headerStyle: {
-            backgroundColor: "green",
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        }}
-      >
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen
-          name="Detail"
-          component={DetailScreen}
-          options={{
-            title: "My home",
-            headerStyle: {
-              backgroundColor: "red",
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-          }}
-        />
-      </Stack.Navigator> */}
     </NavigationContainer>
   );
 };

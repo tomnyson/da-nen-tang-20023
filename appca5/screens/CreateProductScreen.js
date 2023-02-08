@@ -5,10 +5,12 @@ import {
   StyleSheet,
   TextInput,
   Button,
+  Alert,
   //   Picker,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useForm, Controller } from "react-hook-form";
+import axios from "axios";
 
 const CreateProductScreen = () => {
   const categories = ["samsung", "apple", "oppo", "vinsmart"];
@@ -19,7 +21,7 @@ const CreateProductScreen = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
+      title: "",
       image: "",
       price: 0,
       quantity: 0,
@@ -28,8 +30,17 @@ const CreateProductScreen = () => {
       category: "samsung",
     },
   });
-
-  const onSubmit = (data) => console.log(data);
+  const API = "https://61a5e3c48395690017be8ed2.mockapi.io/blogs/products";
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(API, data);
+      if (response.status === 201) {
+        Alert.alert("Success", "tạo thành công");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -41,17 +52,16 @@ const CreateProductScreen = () => {
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             onBlur={onBlur}
-            style={[styles.txtInput, errors.name && styles.inputError]}
+            style={[styles.txtInput, errors.title && styles.inputError]}
             onChangeText={onChange}
             placeholder="tên sản phẩm"
             value={value}
           />
         )}
-        name="name"
+        name="title"
       ></Controller>
-      {errors.name && <Text style={styles.txtError}>This is required.</Text>}
-      
-      
+      {errors.title && <Text style={styles.txtError}>This is required.</Text>}
+
       <Controller
         control={control}
         rules={{
@@ -69,8 +79,7 @@ const CreateProductScreen = () => {
         name="image"
       ></Controller>
       {errors.image && <Text style={styles.txtError}>This is required.</Text>}
-      
-      
+
       <Controller
         control={control}
         rules={{

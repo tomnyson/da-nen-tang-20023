@@ -1,62 +1,142 @@
 import { useState } from "react";
-import { TextInput, View, StyleSheet, Button, Alert } from "react-native";
+import {
+  TextInput,
+  View,
+  ToastAndroid,
+  Text,
+  StyleSheet,
+  Button,
+  Platform,
+  Alert,
+} from "react-native";
 import axios from "axios";
 import { API } from "../const";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup
+  .object({
+    title: yup.string().required(),
+    price: yup
+      .number()
+      .positive("price must greater than 0")
+      .integer()
+      .required(),
+    image: yup.string().required(),
+    description: yup.string().required(),
+  })
+  .required();
+
 const CreateProductScreen = () => {
   const [product, setProduct] = useState({});
-  const onHandleChange = (name, value) => {
-    setProduct({ ...product, [name]: value });
-  };
-  const onSubmit = async () => {
-    const response = await axios.post(API, product);
+  console.log(Platform.OS);
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      title: "",
+      price: 0,
+      image: "",
+      description: "",
+    },
+    resolver: yupResolver(schema),
+  });
+  console.log("errors", errors);
+  const onSubmit = async (data) => {
+    const response = await axios.post(API, data);
     if (response.status === 201) {
-      Alert.alert("message","thêm thành công")
+      reset({
+        data: {
+          title: "",
+          price: 0,
+          image: "",
+          description: "",
+        },
+      });
+      if (Platform.OS === "android") {
+        ToastAndroid.show("thêm thành công !", ToastAndroid.SHORT);
+      } else {
+        Alert.alert("message", "thêm thành công");
+      }
     }
   };
   // validate du lieu dau vao
   console.log("product", JSON.stringify(product));
   return (
     <View style={styles.container}>
-      <TextInput
-        onChangeText={(value) => {
-          onHandleChange("name", value);
-        }}
-        style={styles.txtInput}
-        placeholder="tên sản phẩm"
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            onBlur={onBlur}
+            onChange={onChange}
+            value={value}
+            onChangeText={onChange}
+            style={styles.txtInput}
+            placeholder="tên sản phẩm"
+          />
+        )}
+        name="title"
       />
-      <TextInput
-        onChangeText={(value) => {
-          onHandleChange("image", value);
-        }}
-        style={styles.txtInput}
-        placeholder="hình ảnh"
+      {errors.title && (
+        <Text style={styles.txtError}>{errors.title.message}</Text>
+      )}
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            onBlur={onBlur}
+            onChange={onChange}
+            value={value}
+            onChangeText={onChange}
+            style={styles.txtInput}
+            placeholder="giá sản phẩm"
+          />
+        )}
+        name="price"
       />
-      <TextInput
-        onChangeText={(value) => {
-          onHandleChange("price", value);
-        }}
-        style={styles.txtInput}
-        keyboardType="numberic"
-        placeholder="giá"
+      {errors.price && (
+        <Text style={styles.txtError}>{errors.price.message}</Text>
+      )}
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            onBlur={onBlur}
+            onChange={onChange}
+            value={value}
+            onChangeText={onChange}
+            style={styles.txtInput}
+            placeholder="hình ảnh"
+          />
+        )}
+        name="image"
       />
-      <TextInput
-        onChangeText={(value) => {
-          onHandleChange("quantity", value);
-        }}
-        style={styles.txtInput}
-        placeholder="số lương"
-        keyboardType="number-pad"
+      {errors.image && (
+        <Text style={styles.txtError}>{errors.image.message}</Text>
+      )}
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            onBlur={onBlur}
+            onChange={onChange}
+            value={value}
+            onChangeText={onChange}
+            style={styles.txtInput}
+            placeholder="description"
+          />
+        )}
+        name="description"
       />
-      <TextInput
-        multiline={true}
-        numberOfLines={4}
-        onChangeText={(value) => {
-          onHandleChange("description", value);
-        }}
-        style={styles.txtInput}
-        placeholder="mô tả"
-      />
-      <Button onPress={onSubmit} title="Create"></Button>
+      {errors.description && (
+        <Text style={styles.txtError}>{errors.description.message}</Text>
+      )}
+      <Button onPress={handleSubmit(onSubmit)} title="Create"></Button>
     </View>
   );
 };
@@ -74,6 +154,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#000",
     padding: 5,
+    marginBottom: 5,
+  },
+  txtError: {
+    color: "red",
     marginBottom: 5,
   },
 });
