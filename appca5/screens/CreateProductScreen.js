@@ -1,52 +1,164 @@
-import { View, Text, StyleSheet, TextInput, Button } from "react-native";
-import Picker from "@react-native-picker/picker";
+import { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Button,
+  //   Picker,
+} from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { useForm, Controller } from "react-hook-form";
+
 const CreateProductScreen = () => {
-  /*
-      "title": "Tempora unde assumenda accusantium ullam.",
-            "description": "Voluptatibus fuga repudiandae eveniet hic. Corrupti itaque veniam. Quas nemo optio beatae. Sunt a voluptatum dolor nisi vitae laudantium. Qui tempore voluptates quo quasi minima qui. Nemo officia ab minus molestias voluptatibus dolorem ratione excepturi deleniti.",
-            "price": 57988.05,
-            "image": "https://loremflickr.com/640/480",
-            "category": "asperiores",
-            "discount": 72,
-            "quantity": 64063,
-    */
+  const categories = ["samsung", "apple", "oppo", "vinsmart"];
+  const [selected, setSelected] = useState(categories[0]);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      image: "",
+      price: 0,
+      quantity: 0,
+      discount: 0,
+      description: "",
+      category: "samsung",
+    },
+  });
+
+  const onSubmit = (data) => console.log(data);
+
   return (
     <View style={styles.container}>
-      <TextInput style={styles.txtInput} placeholder="tên sản phẩm" />
-      <TextInput style={styles.txtInput} placeholder="hình ảnh" />
-      <TextInput
-        onChangeText={(value) => {
-          onHandleChange("price", value);
+      <Controller
+        control={control}
+        rules={{
+          required: true,
         }}
-        style={styles.txtInput}
-        keyboardType="numberic"
-        placeholder="giá"
-      />
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            onBlur={onBlur}
+            style={[styles.txtInput, errors.name && styles.inputError]}
+            onChangeText={onChange}
+            placeholder="tên sản phẩm"
+            value={value}
+          />
+        )}
+        name="name"
+      ></Controller>
+      {errors.name && <Text style={styles.txtError}>This is required.</Text>}
+      
+      
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            onBlur={onBlur}
+            style={[styles.txtInput, errors.image && styles.inputError]}
+            onChangeText={onChange}
+            placeholder="hình ảnh"
+            value={value}
+          />
+        )}
+        name="image"
+      ></Controller>
+      {errors.image && <Text style={styles.txtError}>This is required.</Text>}
+      
+      
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            onBlur={onBlur}
+            style={[styles.txtInput, errors.price && styles.inputError]}
+            onChangeText={onChange}
+            defaultValue={value}
+            placeholder="giá"
+            value={value}
+          />
+        )}
+        name="price"
+      ></Controller>
+      {errors.price && <Text style={styles.txtError}>This is required.</Text>}
       <Picker
-        // selectedValue={"java"}
+        selectedValue={selected}
         style={{ height: 50, width: 150 }}
-        // onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+        onValueChange={setSelected}
       >
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
+        {categories.map((category) => {
+          return (
+            <Picker.Item key={category} label={category} value={category} />
+          );
+        })}
       </Picker>
-      <TextInput
-        style={styles.txtInput}
-        placeholder="số lương"
-        keyboardType="number-pad"
-      />
-      <TextInput
-        style={styles.txtInput}
-        placeholder="discount"
-        keyboardType="number-pad"
-      />
-      <TextInput
-        multiline={true}
-        numberOfLines={4}
-        style={styles.txtInput}
-        placeholder="mô tả"
-      />
-      <Button title="Create"></Button>
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            onBlur={onBlur}
+            style={[styles.txtInput, errors.quantity && styles.inputError]}
+            onChangeText={onChange}
+            placeholder="giá"
+            value={value}
+          />
+        )}
+        name="quantity"
+      ></Controller>
+      {errors.quantity && (
+        <Text style={styles.txtError}>This is required.</Text>
+      )}
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            onBlur={onBlur}
+            style={[styles.txtInput, errors.discount && styles.inputError]}
+            onChangeText={onChange}
+            placeholder="discount"
+            value={value}
+            defaultValue={value}
+          />
+        )}
+        name="discount"
+      ></Controller>
+      {errors.discount && (
+        <Text style={styles.txtError}>This is required.</Text>
+      )}
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            onBlur={onBlur}
+            style={[styles.txtInput, errors.description && styles.inputError]}
+            onChangeText={onChange}
+            placeholder="description"
+            value={value}
+          />
+        )}
+        name="description"
+      ></Controller>
+      {errors.description && (
+        <Text style={styles.txtError}>This is required.</Text>
+      )}
+      <Button onPress={handleSubmit(onSubmit)} title="Create"></Button>
     </View>
   );
 };
@@ -64,6 +176,14 @@ const styles = StyleSheet.create({
     borderColor: "#000",
     padding: 5,
     marginBottom: 5,
+  },
+  txtError: {
+    fontSize: 12,
+    marginBottom: 5,
+    color: "red",
+  },
+  inputError: {
+    borderColor: "red",
   },
 });
 export default CreateProductScreen;
