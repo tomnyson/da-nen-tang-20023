@@ -5,13 +5,30 @@ const ProductItem = (props) => {
   const navigation = useNavigation();
   return (
     <View style={{ flex: 1 }}>
-      <Image source={{ uri: props.item.image }} style={{ height: 200 }} />
+      <Image
+        source={{ uri: props.item.image }}
+        style={{ height: 200, resizeMode: "contain" }}
+      />
       <Text style={styles.title}>{props.item.title}</Text>
       <Text style={styles.price}>{props.item.price}</Text>
       <Text>quantity: {props.item.quantity}</Text>
       {/* <Text>{props.item.description}</Text> */}
       <Button
-        title="detail"
+        title="Buy Now"
+        onPress={() => {
+          navigation.navigate("Detail", { item: props.item });
+        }}
+      ></Button>
+      <Button
+        color="red"
+        title="delete"
+        onPress={() => {
+          props.onDelete(props.item.id);
+        }}
+      ></Button>
+      <Button
+        color="green"
+        title="edit"
         onPress={() => {
           navigation.navigate("Detail", { item: props.item });
         }}
