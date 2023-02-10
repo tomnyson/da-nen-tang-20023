@@ -10,6 +10,7 @@ import Product from "./components/Product.js";
 import { View, ScrollView, StyleSheet, ActivityIndicator } from "react-native";
 import ProductListView from "./components/ProductListView";
 import Navigation from "./Navigation";
+import * as firebase from "./firebaseConfig";
 /**
  * tên
  * tuổi

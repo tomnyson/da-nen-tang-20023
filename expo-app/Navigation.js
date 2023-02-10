@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Image } from "react-native";
@@ -6,7 +7,8 @@ import DetailScreen from "./screens/DetailScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
 import CreateProductScreen from "./screens/CreateProductScreen";
-
+import { db } from "./firebaseConfig";
+import { API_URL } from "@env";
 const HomeStack = createNativeStackNavigator();
 const AdminStack = createNativeStackNavigator();
 
@@ -33,6 +35,18 @@ function LogoTitle() {
 }
 const Tab = createBottomTabNavigator();
 const Navigation = () => {
+  useEffect(() => {
+    const productRef = db.collection("products");
+    console.log("productRef", productRef);
+    productRef.get().then((snapshot) => {
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("All data in 'books' collection", data);
+    });
+  }, []);
+
   return (
     <NavigationContainer>
       <Tab.Navigator
