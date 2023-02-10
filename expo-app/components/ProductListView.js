@@ -16,9 +16,13 @@ export const ProductItem = ({ item, onGoDetail }) => {
     <View style={{ flex: 1 }}>
       <Image
         style={{ width: "100%", height: 100 }}
-        source={{
-          uri: item.image,
-        }}
+        source={
+          item?.image
+            ? {
+                uri: item?.image,
+              }
+            : require("../assets/image-404.jpeg")
+        }
       />
       <Text numberOfLines={2} style={styles.title}>
         {item.title}

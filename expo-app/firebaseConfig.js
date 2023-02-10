@@ -14,7 +14,6 @@ if (firebase) {
 } else {
   app = firebase.app();
 }
-
 const db = app.firestore();
 const auth = firebase.auth();
 
