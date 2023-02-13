@@ -9,6 +9,7 @@ import { AntDesign } from "@expo/vector-icons";
 import CreateProductScreen from "./screens/CreateProductScreen";
 import { db } from "./firebaseConfig";
 import { API_URL } from "@env";
+
 const HomeStack = createNativeStackNavigator();
 const AdminStack = createNativeStackNavigator();
 

@@ -1,7 +1,12 @@
 import { useContext } from "react";
 import { View, Text, Image, StyleSheet, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { DataContext } from "../context";
+
 const ProductItem = (props) => {
+  const value = useContext(DataContext);
+  console.log("DataContext", value);
+
   const navigation = useNavigation();
   return (
     <View style={{ flex: 1 }}>
@@ -16,7 +21,8 @@ const ProductItem = (props) => {
       <Button
         title="Buy Now"
         onPress={() => {
-          navigation.navigate("Detail", { item: props.item });
+          value?.handleEvent(props.item?.id);
+          // navigation.navigate("Detail", { item: props.item });
         }}
       ></Button>
       <Button
