@@ -5,7 +5,6 @@ import { DataContext } from "../context";
 
 const ProductItem = (props) => {
   const value = useContext(DataContext);
-  console.log("DataContext", value);
 
   const navigation = useNavigation();
   return (

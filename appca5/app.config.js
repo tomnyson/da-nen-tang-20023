@@ -1,7 +1,7 @@
 module.exports = {
   expo: {
-    name: "appca5",
-    slug: "appca5",
+    name: "expo-ca5",
+    slug: "expo-app",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
@@ -24,6 +24,9 @@ module.exports = {
         backgroundColor: "#FFFFFF",
       },
     },
+    web: {
+      favicon: "./assets/favicon.png",
+    },
     plugins: [
       [
         "expo-image-picker",
@@ -33,8 +36,5 @@ module.exports = {
         },
       ],
     ],
-    web: {
-      favicon: "./assets/favicon.png",
-    },
   },
 };

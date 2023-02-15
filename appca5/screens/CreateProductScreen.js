@@ -54,13 +54,13 @@ const CreateProductScreen = () => {
     fetchData();
   }, []);
   const fetchData = async () => {
-    const snapshot = await productRef.get();
-    if (snapshot) {
-      snapshot.forEach((doc) => {
-        console.log("Id", doc.id);
-        console.log(doc.id, "=>", doc.data());
-      });
-    }
+    // const snapshot = await productRef.get();
+    // if (snapshot) {
+    //   snapshot.forEach((doc) => {
+    //     console.log("Id", doc.id);
+    //     console.log(doc.id, "=>", doc.data());
+    //   });
+    // }
   };
   const onSubmit = async (data) => {
     try {
@@ -98,8 +98,6 @@ const CreateProductScreen = () => {
       {errors.title && (
         <Text style={styles.txtError}>{errors.title.message}</Text>
       )}
-
-      <UploadImage />
 
       <Controller
         control={control}
@@ -146,6 +144,9 @@ const CreateProductScreen = () => {
       {errors.category && (
         <Text style={styles.txtError}>{errors.price.category}</Text>
       )}
+      <View>
+        <UploadImage />
+      </View>
 
       <Controller
         control={control}
