@@ -13,13 +13,13 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { db } from "../firebaseConfig";
 const { v4: uuidv4 } = require("uuid");
+import UploadImage from "../components/UploadImage";
+import { collection, addDoc, getFirestore } from "firebase/firestore";
 
 const schema = yup
   .object({
     title: yup.string().required(),
-    image: yup.string().required(),
     price: yup.number().positive().integer().required(),
     quantity: yup.number().positive().integer().required(),
     discount: yup.number().positive().integer().required(),
@@ -31,7 +31,7 @@ const schema = yup
 const CreateProductScreen = () => {
   const categories = ["samsung", "apple", "oppo", "vinsmart"];
   const [selected, setSelected] = useState(categories[0]);
-  const productRef = db.collection("products");
+  const productRef = collection(getFirestore(), "products_ca5");
   const {
     control,
     handleSubmit,
@@ -65,10 +65,7 @@ const CreateProductScreen = () => {
   const onSubmit = async (data) => {
     try {
       const docId = uuidv4();
-      await productRef.doc(docId).set({
-        ...data,
-        id: docId,
-      });
+      await addDoc(productRef, { ...data, id: docId });
       Alert.alert("Success", "tạo thành công");
       //   console.log(data);
       //   const response = await axios.post(API, data);
@@ -102,25 +99,7 @@ const CreateProductScreen = () => {
         <Text style={styles.txtError}>{errors.title.message}</Text>
       )}
 
-      <Controller
-        control={control}
-        // rules={{
-        //   required: true,
-        // }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            onBlur={onBlur}
-            style={[styles.txtInput, errors.image && styles.inputError]}
-            onChangeText={onChange}
-            placeholder="hình ảnh"
-            value={value}
-          />
-        )}
-        name="image"
-      ></Controller>
-      {errors.image && (
-        <Text style={styles.txtError}>{errors.title.image}</Text>
-      )}
+      <UploadImage />
 
       <Controller
         control={control}

@@ -6,7 +6,14 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CreateProductScreen from "./screens/CreateProductScreen";
 import { DataContext } from "./context";
+import { config } from "./const";
 import { Alert } from "react-native";
+import { getApps, initializeApp } from "firebase/app";
+
+if (!getApps().length) {
+  initializeApp(config);
+}
+
 // const Stack = createNativeStackNavigator();
 
 // const Root = () => {
