@@ -67,8 +67,16 @@ const Navigation = () => {
           tabBarInactiveTintColor: "gray",
         })}
       >
-        <Tab.Screen name="Homes" component={HomeStackScreen} />
-        <Tab.Screen name="Admin" component={AdminStackScreen} />
+        <Tab.Screen
+          name="Homes"
+          options={{ headerShown: false }}
+          component={HomeStackScreen}
+        />
+        <Tab.Screen
+          options={{ headerShown: false }}
+          name="Admin"
+          component={AdminStackScreen}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );

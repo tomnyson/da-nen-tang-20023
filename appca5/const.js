@@ -1,5 +1,5 @@
 import { API_KEY } from "@env";
-import axios from "axios";
+
 export const config = {
   apiKey: API_KEY,
   authDomain: "tns-sendotp.firebaseapp.com",
@@ -11,12 +11,10 @@ export const config = {
 };
 
 export const convertUriToBlob = async (uri) => {
-  try {
-    const response = await axios.get(uri, {
-      responseType: "blob",
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to convert URI to Blob");
+  const response = await fetch(uri);
+  if (response.status === 200) {
+    const blob = await response.blob();
+    return blob;
   }
+  return null;
 };

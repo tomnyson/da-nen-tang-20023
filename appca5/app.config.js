@@ -1,7 +1,7 @@
 module.exports = {
   expo: {
-    name: "expo-app",
-    slug: "expo-app",
+    name: "appca5",
+    slug: "appca5",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
@@ -27,14 +27,5 @@ module.exports = {
     web: {
       favicon: "./assets/favicon.png",
     },
-    plugins: [
-      [
-        "expo-image-picker",
-        {
-          photosPermission:
-            "The app accesses your photos to let you share them with your friends.",
-        },
-      ],
-    ],
   },
 };

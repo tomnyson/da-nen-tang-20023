@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,8 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { db } from "../firebaseConfig";
+const { v4: uuidv4 } = require("uuid");
 
 const schema = yup
   .object({
@@ -29,6 +31,7 @@ const schema = yup
 const CreateProductScreen = () => {
   const categories = ["samsung", "apple", "oppo", "vinsmart"];
   const [selected, setSelected] = useState(categories[0]);
+  const productRef = db.collection("products");
   const {
     control,
     handleSubmit,
@@ -46,13 +49,32 @@ const CreateProductScreen = () => {
     resolver: yupResolver(schema),
   });
   const API = "https://61a5e3c48395690017be8ed2.mockapi.io/blogs/products";
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const fetchData = async () => {
+    const snapshot = await productRef.get();
+    if (snapshot) {
+      snapshot.forEach((doc) => {
+        console.log("Id", doc.id);
+        console.log(doc.id, "=>", doc.data());
+      });
+    }
+  };
   const onSubmit = async (data) => {
     try {
-      console.log(data);
-      const response = await axios.post(API, data);
-      if (response.status === 201) {
-        Alert.alert("Success", "tạo thành công");
-      }
+      const docId = uuidv4();
+      await productRef.doc(docId).set({
+        ...data,
+        id: docId,
+      });
+      Alert.alert("Success", "tạo thành công");
+      //   console.log(data);
+      //   const response = await axios.post(API, data);
+      //   if (response.status === 201) {
+      //     Alert.alert("Success", "tạo thành công");
+      //   }
     } catch (error) {
       console.error(error);
     }
