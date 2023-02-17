@@ -6,7 +6,10 @@ import {
   StyleSheet,
   TouchableHighlight,
 } from "react-native";
-const UserProfile = () => {
+import { auth } from "../firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const UserProfile = ({ navigation }) => {
   const [profile, setProfile] = useState({
     ten: "",
     nganh: "",
@@ -20,6 +23,26 @@ const UserProfile = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.txtTitle}>Profile</Text>
+      <TouchableHighlight
+        onPress={() => {
+          console.log("call logout");
+          auth
+            .signOut()
+            .then(async () => {
+              // Sign-out successful.
+              /**
+               * xoá localstorage
+               *
+               */
+              await AsyncStorage.removeItem("user");
+            })
+            .catch((error) => {
+              // An error happened.
+            });
+        }}
+      >
+        <Text style={styles.buttonLogout}>Logout</Text>
+      </TouchableHighlight>
       {isEdit && (
         <View>
           <TextInput
@@ -84,7 +107,9 @@ const UserProfile = () => {
           <Text>Tên: </Text>
           <TouchableHighlight onPress={() => setIsEdit(true)}>
             <View style={styles.button}>
-              <Text style={{ color: "#fff" }}>Edit</Text>
+              <Text style={styles.button} style={{ color: "#fff" }}>
+                Edit
+              </Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -119,6 +144,11 @@ const styles = StyleSheet.create({
     borderColor: "#000",
     padding: 5,
     marginBottom: 5,
+  },
+  buttonLogout: {
+    color: "rgb(33, 150, 243)",
+    fontSize: 20,
+    marginVertical: 20,
   },
 });
 export default UserProfile;

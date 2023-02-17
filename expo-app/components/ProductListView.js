@@ -11,9 +11,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+
 export const ProductItem = ({ item, onGoDetail }) => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginVertical: 5, marginHorizontal: 5 }}>
       <Image
         style={{ width: "100%", height: 100 }}
         source={
@@ -37,7 +38,6 @@ export const ProductItem = ({ item, onGoDetail }) => {
 };
 const ProductListView = ({ products, onHandleSearch, navigation }) => {
   const [keyword, setKeyword] = useState("");
-
   const onGoDetail = (item) => {
     navigation.navigate("Detail", { detail: item });
   };

@@ -1,16 +1,4 @@
-import { useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native";
-import icon from "./assets/MainMenuBG.png";
-import Profile from "./components/Profile";
-import { styles } from "./styles";
-import UserProfile from "./components/UserProfile";
-import axios from "axios";
-import Product from "./components/Product.js";
-import { View, ScrollView, StyleSheet, ActivityIndicator } from "react-native";
-import ProductListView from "./components/ProductListView";
 import Navigation from "./Navigation";
-import * as firebase from "./firebaseConfig";
 /**
  * tên
  * tuổi

@@ -3,11 +3,12 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native";
 import Profile from "../components/Profile";
 import { styles } from "../styles";
-import UserProfile from "../components/UserProfile";
+import UserProfile from "./UserProfileScreen";
 import axios from "axios";
 import Product from "../components/Product.js";
 import { View, ScrollView, StyleSheet, ActivityIndicator } from "react-native";
 import ProductListView from "../components/ProductListView";
+import { db } from "../firebaseConfig";
 /**
  * tên
  * tuổi
@@ -27,11 +28,13 @@ import ProductListView from "../components/ProductListView";
  * kết hợp cả 3 lại với nhau
  */
 const API = "https://61a5e3c48395690017be8ed2.mockapi.io/blogs/products";
+
 export default function Home({ navigation }) {
   const [diemManh, setDiemManh] = useState("");
   const [diemYeu, setDiemYeu] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const productRef = db.collection("products");
 
   useEffect(() => {
     console.log("render success");
@@ -39,20 +42,24 @@ export default function Home({ navigation }) {
   }, []);
 
   const fetchProducts = async () => {
-    const response = await axios.get(API);
-    if (response.status === 200) {
-      setProducts(response.data);
-      setLoading(false);
-    }
-  };
-
-  async function fetchProductsPure() {}
-
-  const handleChangeTextDiemManh = (event) => {
-    setDiemManh(event);
-  };
-  const handleChangeTextDiemYeu = (event) => {
-    setDiemYeu(event);
+    // const response = await axios.get(API);
+    // if (response.status === 200) {
+    //   setProducts(response.data);
+    //   setLoading(false);
+    // }
+    try {
+      const productSnapshot = await productRef.get();
+      if (productSnapshot) {
+        const data = [];
+        productSnapshot.forEach((doc) => {
+          data.push({ id: doc.id, ...doc.data() });
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+        });
+        setProducts(data);
+        setLoading(false);
+      }
+    } catch (error) {}
   };
 
   if (loading) {
